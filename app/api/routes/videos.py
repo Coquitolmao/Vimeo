@@ -7,7 +7,7 @@ from app.schemas.video import VideoList, PlayVideoResponse, UploadResponse
 router = APIRouter()
 
 def get_vimeo_client() -> VimeoClient:
-    """Dependency injection for VimeoClient"""
+
     return VimeoClient()
 
 @router.get("/", response_model=VideoList)
