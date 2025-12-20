@@ -2,12 +2,11 @@ from fastapi import APIRouter, Depends, Query, UploadFile, File, Response
 from fastapi.responses import RedirectResponse
 from typing import Literal
 from app.services.vimeo_client import VimeoClient
-from app.schemas.video import VideoList, PlayVideoResponse, UploadResponse
-
+from app.schemas.video import VideoList
 router = APIRouter()
 
 def get_vimeo_client() -> VimeoClient:
-
+    """Dependency injection for VimeoClient"""
     return VimeoClient()
 
 @router.get("/", response_model=VideoList)
@@ -29,3 +28,8 @@ async def search_videos(
     per_page: int = Query(25, ge=1, le=100),
     client: VimeoClient = Depends(get_vimeo_client)
 ):
+    """
+    Search for videos in the user's account by query string.
+    """
+    return await client.search_videos(query=q, page=page, per_page=per_page)
+
